@@ -1,14 +1,21 @@
 #!/bin/bash
 
 source "$(dirname "$0")/../export.sh"
-echo $GIT_TOKEN
-echo $TEST
 
+REQUIRED_VARS=("GIT_TOKEN" "GIT_NAME" "GIT_EMAIL")
 
-if [ -z "$GIT_TOKEN" ]; then
-  echo "Error: GIT_TOKEN is not set. Exiting."
-  exit 1
-fi
+for var in "${REQUIRED_VARS[@]}"; do
+  if [ -z "${!var}" ]; then
+    echo "Error: $var is not set. Exiting."
+    exit 1
+  fi
+done
+
+ENV_FLAGS=""
+for var in "${REQUIRED_VARS[@]}"; do
+  ENV_FLAGS="$ENV_FLAGS -e $var=${!var}"
+done
+
 
 docker build -t go-img .
 
@@ -17,5 +24,5 @@ docker rm -f go-ctr 2>/dev/null || true && \
 docker run -d \
   --name go-ctr \
   -v /home/mehdi/code:/app \
-  -e GIT_TOKEN=$GIT_TOKEN \
+  $ENV_FLAGS \
   go-img
