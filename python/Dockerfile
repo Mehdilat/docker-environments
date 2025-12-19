@@ -2,15 +2,19 @@
 FROM python:3.12-slim
 WORKDIR /app
 
-# Install dependencies
+# Copy uv
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 # Install dependencies
-RUN apk add --no-cache \
+RUN apt-get update && apt-get install -y \
     git \
     wget \
     gnupg \
-    sudo
+    sudo \
+    unzip \
+    groff \
+    less \
+    && rm -rf /var/lib/apt/lists/*
 
 # Configure git
 RUN git config --global user.name "$GIT_NAME" \
@@ -24,5 +28,12 @@ RUN wget -O terraform.zip https://releases.hashicorp.com/terraform/1.9.8/terrafo
     && mv terraform /usr/local/bin/ \
     && rm terraform.zip \
     && terraform --version
+
+# Install AWS CLI v2 (Binary for Debian)
+RUN wget "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -O "awscliv2.zip" \
+    && unzip awscliv2.zip \
+    && ./aws/install \
+    && rm -rf aws awscliv2.zip \
+    && aws --version
 
 CMD ["tail", "-f", "/dev/null"]

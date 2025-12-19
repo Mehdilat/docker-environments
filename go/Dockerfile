@@ -7,7 +7,12 @@ RUN apk add --no-cache \
     git \
     wget \
     gnupg \
-    sudo
+    sudo \
+    unzip \
+    groff \
+    less \
+    python3 \
+    py3-pip
 
 # Configure git
 RUN git config --global user.name "$GIT_NAME" \
@@ -22,4 +27,10 @@ RUN wget -O terraform.zip https://releases.hashicorp.com/terraform/1.9.8/terrafo
     && rm terraform.zip \
     && terraform --version
 
+# Install AWS CLI (pip for Alpine)
+RUN pip3 install --upgrade pip --break-system-packages \
+    && pip3 install awscli --break-system-packages \
+    && aws --version
+
+# Execute to keep running
 CMD ["tail", "-f", "/dev/null"]
