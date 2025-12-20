@@ -12,7 +12,8 @@ RUN apk add --no-cache \
     groff \
     less \
     python3 \
-    py3-pip
+    py3-pip \
+    make
 
 # Configure git
 RUN git config --global user.name "$GIT_NAME" \
@@ -31,6 +32,15 @@ RUN wget -O terraform.zip https://releases.hashicorp.com/terraform/1.9.8/terrafo
 RUN pip3 install --upgrade pip --break-system-packages \
     && pip3 install awscli --break-system-packages \
     && aws --version
+
+# Configure AWS CLI
+RUN mkdir -p /root/.aws && \
+    echo "[default]" > /root/.aws/credentials && \
+    echo "aws_access_key_id = ${AWS_ACCESS_KEY_ID}" >> /root/.aws/credentials && \
+    echo "aws_secret_access_key = ${AWS_SECRET_ACCESS_KEY}" >> /root/.aws/credentials && \
+    echo "[default]" > /root/.aws/config && \
+    echo "region = ${AWS_DEFAULT_REGION:-us-east-1}" >> /root/.aws/config && \
+    echo "output = json" >> /root/.aws/config
 
 # Execute to keep running
 CMD ["tail", "-f", "/dev/null"]

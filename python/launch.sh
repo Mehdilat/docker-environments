@@ -2,7 +2,7 @@
 
 source "$(dirname "$0")/../export.sh"
 
-REQUIRED_VARS=("GIT_TOKEN" "GIT_NAME" "GIT_EMAIL")
+REQUIRED_VARS=("GIT_TOKEN" "GIT_NAME" "GIT_EMAIL" "AWS_ACCESS_KEY_ID" "AWS_SECRET_ACCESS_KEY" "AWS_DEFAULT_REGION")
 
 for var in "${REQUIRED_VARS[@]}"; do
   if [ -z "${!var}" ]; then
