@@ -4,16 +4,18 @@ WORKDIR /app
 
 # Install dependencies
 RUN apk add --no-cache \
-    git \
-    wget \
-    gnupg \
     sudo \
+    git \
+    make \
+    bash \
+    openssh-client \
+    wget \
     unzip \
+    gnupg \
     groff \
     less \
     python3 \
-    py3-pip \
-    make
+    py3-pip 
 
 # Configure git
 RUN git config --global user.name "$GIT_NAME" \

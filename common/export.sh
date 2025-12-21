@@ -3,7 +3,7 @@
 # Export environment variables from .env file
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ENV_FILE="$SCRIPT_DIR/.env"
+ENV_FILE="$SCRIPT_DIR/../.env"
 
 # Check if .env file exists
 if [ ! -f "$ENV_FILE" ]; then

@@ -1,3 +1,5 @@
 #!/bin/bash
 
-docker exec -it go-ctr /bin/sh
+CONTAINER_NAME="go-ctr"
+
+source "$(dirname "$0")/../common/enter.sh" "$CONTAINER_NAME"
