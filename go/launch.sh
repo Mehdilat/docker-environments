@@ -17,7 +17,7 @@ for var in "${REQUIRED_VARS[@]}"; do
 done
 
 
-docker build -t go-img .
+docker build -t go-img "$(dirname "$0")"
 
 docker rm -f go-ctr 2>/dev/null || true && \
 
